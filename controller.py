@@ -98,6 +98,8 @@ def show_letter(letter):
       extend(FULL, NONE, NONE, NONE, FULL)
     case 'z':
       extend(NONE, FULL, NONE, NONE, NONE)
+    case _:
+      extend(FULL, FULL, FULL, FULL, FULL)
 
 for letter in sys.argv[1]:
   show_letter(letter)
