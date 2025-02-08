@@ -32,7 +32,7 @@ def extend(t, i, m, r, p):
   elif t == NONE:
     t = FULL
   elif t == HALF:
-    t = FULL - HALF
+    t = NONE - HALF
 
   thumb.ChangeDutyCycle(t)
   index.ChangeDutyCycle(i)
