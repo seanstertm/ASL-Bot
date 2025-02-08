@@ -3,7 +3,7 @@ from time import sleep
 
 #amount of extension
 FULL = 2.5
-HALF = 7.5
+HALF = 9.5
 NONE = 12.5
 
 GPIO.setmode(GPIO.BOARD)
@@ -27,7 +27,10 @@ ring.start(0)
 pinky.start(0)
 
 def extend(t, i, m, r, p):
-  t = (t - 7.5) * -1 + 7.5
+  if t == FULL:
+    t = NONE
+  elif t == NONE:
+    t = FULL
 
   thumb.ChangeDutyCycle(t)
   index.ChangeDutyCycle(i)
