@@ -101,9 +101,9 @@ def show_letter(letter):
     case _:
       extend(FULL, FULL, FULL, FULL, FULL)
 
-for letter in sys.argv[1]:
-  show_letter(letter)
-  sleep(int(sys.argv[2]))
+# for letter in sys.argv[1]:
+#   show_letter(letter)
+#   sleep(int(sys.argv[2]))
 
-extend(FULL, FULL, FULL, FULL, FULL)
-sleep(1)
+# extend(FULL, FULL, FULL, FULL, FULL)
+# sleep(1)
