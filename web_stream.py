@@ -9,10 +9,7 @@ import signal
 import sys
 import requests
 
-# from flask_socketio import SocketIO, emit
-
 app = Flask(__name__)
-# socketio = SocketIO(app)
 
 # 1. Load your model and initialize MediaPipe
 model = joblib.load("model.pkl")
@@ -34,7 +31,7 @@ HOLD_TIME = 2.0
 # 3. Open the camera
 camera = cv2.VideoCapture(0)
 
-model_name = "google/flan-t5-large"
+model_name = "google/flan-t5-base"
 
 generator = pipeline(
     "text2text-generation",

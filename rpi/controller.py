@@ -64,8 +64,8 @@ def show_letter(letter):
       extend(NONE, FULL, FULL, NONE, NONE)
     case 'i':
       extend(NONE, NONE, NONE, NONE, FULL)
-    case 'j': # This will rotate. Special case
-      extend(NONE, NONE, NONE, NONE, FULL)
+    case 'j':
+      extend(NONE, NONE, NONE, NONE, HALF)
     case 'k':
       extend(FULL, FULL, FULL, NONE, NONE)
     case 'l':
