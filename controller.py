@@ -1,6 +1,8 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
+import sys
+
 #amount of extension
 FULL = 2.5
 HALF = 9.5
@@ -95,8 +97,4 @@ def show_letter(letter):
     case 'z':
       extend(NONE, FULL, NONE, NONE, NONE)
 
-for letter in "abcdefghijklmnopqrstuvwxyz":
-  show_letter(letter)
-  sleep(1)
-
-print("Done!")
+print(sys.argv[2])
