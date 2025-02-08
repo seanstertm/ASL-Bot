@@ -1,4 +1,5 @@
-from flask import Flask, Response
+from flask import Flask, Response, render_template, jsonify
+from transformers import pipeline
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -7,7 +8,10 @@ import time
 import signal
 import sys
 
+from flask_socketio import SocketIO, emit
+
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 # 1. Load your model and initialize MediaPipe
 model = joblib.load("model.pkl")
@@ -28,6 +32,14 @@ HOLD_TIME = 2.0
 
 # 3. Open the camera
 camera = cv2.VideoCapture(0)
+
+model_name = "google/flan-t5-large"
+
+generator = pipeline(
+    "text2text-generation",
+    model=model_name,
+    device=-1,
+)
 
 def preprocess_landmarks(landmarks_21x3):
     wrist = landmarks_21x3[0]
@@ -97,6 +109,75 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
+@socketio.on('image')
+def image(data_image):
+    sbuf = StringIO()
+    sbuf.write(data_image)
+
+    # decode and convert into image
+    b = io.BytesIO(base64.b64decode(data_image))
+    pimg = Image.open(b)
+
+    ## converting RGB to BGR, as opencv standards
+    frame = cv2.cvtColor(np.array(pimg), cv2.COLOR_RGB2BGR)
+
+    # Process the image frame
+    frame = imutils.resize(frame, width=700)
+    frame = cv2.flip(frame, 1)
+    imgencode = cv2.imencode('.jpg', frame)[1]
+
+    # base64 encode
+    stringData = base64.b64encode(imgencode).decode('utf-8')
+    b64_src = 'data:image/jpg;base64,'
+    stringData = b64_src + stringData
+
+    # emit the frame back
+    emit('response_back', stringData)
+
+@app.route("/submit_button", methods=["POST"])
+def submit_button():
+    global recognized_text
+
+    prompt = (
+        f"""
+        Below are examples of how to respond in ALL CAPS. 
+        Respond conversationally.
+        If they ask you a question, answer it.
+        If they say hello, say hello back.
+        If they talk about a topic, give your thoughts on the topic.
+
+        Examples:
+        The user said: HELLO
+        response: HI HOW ARE YOU
+
+        The user said: IAMJOE
+        response: HI JOE
+
+        The user said: WHATISTHEWEATHER
+        response: IT IS SUNNY
+
+        The user said: DOYOULIKEPIZZA
+        response: YES I LIKE PEPPERONI PIZZA
+
+        Do the same for the user's input. Do not repeat the user's input as your response.
+        The user said: {recognized_text}
+        """
+    )
+
+    response = generator(
+        prompt,
+        max_new_tokens=50,
+        num_beams=4,
+        do_sample=True,
+        temperature=1.5,
+        repetition_penalty=2.0
+    )
+
+    llm_output = response[0]["generated_text"]
+
+    recognized_text = ""
+
+    return jsonify({"text": llm_output})
 
 @app.route('/video_feed')
 def video_feed():
@@ -112,15 +193,7 @@ def index():
     """
     A simple page that shows the live video stream in an <img> tag.
     """
-    return '''
-    <html>
-      <head><title>ASL Video Stream</title></head>
-      <body>
-        <h1>ASL Live Stream</h1>
-        <img src="/video_feed" width="640" height="480" />
-      </body>
-    </html>
-    '''
+    return render_template('index.html')
 
 def cleanup_and_save():
     """
