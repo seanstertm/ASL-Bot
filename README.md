@@ -9,6 +9,7 @@ This project demonstrates real-time American Sign Language (ASL) hand-gesture re
 - “Hold for 2 Seconds” Logic: Only appends a letter to the recognized text if the same letter is consistently detected for 2 seconds.
 - Web Streaming: Streams the annotated camera feed in real time through a Flask web server (using MJPEG).
 - Persistence: The recognized letters are saved to recognized_letters.txt whenever the server is stopped or the script exits.
+- Robotics: Uses a Raspberry PI 5 to control 5-DOF Robot hand to sign ASL letters based on LLM output
 
 ## Table of Contents
 - Installation
@@ -18,7 +19,6 @@ This project demonstrates real-time American Sign Language (ASL) hand-gesture re
 - How It Works
 - Configuration
 - Troubleshooting
-- License
 
 ## Installation
 - Clone this repository:
