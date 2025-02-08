@@ -35,32 +35,16 @@ def extend(t, i, m, r, p):
   ring.ChangeDutyCycle(r)
   pinky.ChangeDutyCycle(p)
 
-extend(FULL, NONE, NONE, NONE, NONE)
-sleep(1)
-extend(NONE, NONE, NONE, NONE, NONE)
-sleep(1)
+def show_letter(letter):
+  match letter:
+    case 'a':
+      extend(FULL, NONE, NONE, NONE, NONE)
+    case 'b':
+      extend(NONE, FULL, FULL, FULL, FULL)
 
-extend(NONE, FULL, NONE, NONE, NONE)
+show_letter('a')
 sleep(1)
-extend(NONE, NONE, NONE, NONE, NONE)
-sleep(1)
-
-extend(NONE, NONE, FULL, NONE, NONE)
-sleep(1)
-extend(NONE, NONE, NONE, NONE, NONE)
-sleep(1)
-
-extend(NONE, NONE, NONE, FULL, NONE)
-sleep(1)
-extend(NONE, NONE, NONE, NONE, NONE)
-sleep(1)
-
-extend(NONE, NONE, NONE, FULL, NONE)
-sleep(1)
-extend(NONE, NONE, NONE, NONE, NONE)
-sleep(1)
-
-extend(FULL, FULL, FULL, FULL, FULL)
+show_letter('b')
 sleep(1)
 
 print("Done!")
