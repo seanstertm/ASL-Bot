@@ -9,10 +9,7 @@ import signal
 import sys
 import requests
 
-# from flask_socketio import SocketIO, emit
-
 app = Flask(__name__)
-# socketio = SocketIO(app)
 
 # 1. Load your model and initialize MediaPipe
 model = joblib.load("model.pkl")
@@ -68,7 +65,6 @@ def generate_frames():
         # 6. If we find a hand, classify the letter
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
-                # Draw the hand landmarks for visualization
                 mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
                 # Extract (x,y,z) from each landmark
@@ -77,7 +73,6 @@ def generate_frames():
                     landmark_list.append([lm.x, lm.y, lm.z])
                 landmarks_21x3 = np.array(landmark_list, dtype=np.float32)
 
-                # Preprocess + predict the letter
                 features = preprocess_landmarks(landmarks_21x3)
                 predicted_letter = model.predict([features])[0]
 
@@ -92,12 +87,10 @@ def generate_frames():
                     last_letter = predicted_letter
                     last_letter_start_time = time.time()
 
-                # Display the current prediction on the frame
                 cv2.putText(frame, f"Prediction: {predicted_letter}",
                             (10, 40), cv2.FONT_HERSHEY_SIMPLEX,
                             1, (0, 255, 0), 2)
 
-        # Show the recognized text so far
         cv2.putText(frame, f"Recognized: {recognized_text}",
                     (10, 80), cv2.FONT_HERSHEY_SIMPLEX,
                     1, (255, 0, 0), 2)
@@ -109,31 +102,6 @@ def generate_frames():
         # 9. Yield the frame in multipart boundary format
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-
-# @socketio.on('image')
-# def image(data_image):
-#     sbuf = StringIO()
-#     sbuf.write(data_image)
-
-#     # decode and convert into image
-#     b = io.BytesIO(base64.b64decode(data_image))
-#     pimg = Image.open(b)
-
-#     ## converting RGB to BGR, as opencv standards
-#     frame = cv2.cvtColor(np.array(pimg), cv2.COLOR_RGB2BGR)
-
-#     # Process the image frame
-#     frame = imutils.resize(frame, width=700)
-#     frame = cv2.flip(frame, 1)
-#     imgencode = cv2.imencode('.jpg', frame)[1]
-
-#     # base64 encode
-#     stringData = base64.b64encode(imgencode).decode('utf-8')
-#     b64_src = 'data:image/jpg;base64,'
-#     stringData = b64_src + stringData
-
-#     # emit the frame back
-#     emit('response_back', stringData)
 
 @app.route("/submit_button", methods=["POST"])
 def submit_button():
