@@ -41,10 +41,31 @@ def show_letter(letter):
       extend(FULL, NONE, NONE, NONE, NONE)
     case 'b':
       extend(NONE, FULL, FULL, FULL, FULL)
+    case 'c':
+      extend(NONE, HALF, HALF, HALF, HALF)
+    case 'd':
+      extend(NONE, FULL, NONE, NONE, NONE)
+    case 'e':
+      extend(NONE, NONE, NONE, NONE, NONE)
+    case 'f':
+      extend(NONE, NONE, FULL, FULL, FULL)
+    case 'g':
+      extend(HALF, FULL, NONE, NONE, NONE)
+    case 'h':
+      extend(NONE, FULL, FULL, NONE, NONE)
+    case 'i':
+      extend(NONE, NONE, NONE, NONE, FULL)
+    case 'j': # This will rotate. Special case
+      extend(NONE, NONE, NONE, NONE, FULL)
+    case 'k':
+      extend(FULL, FULL, FULL, NONE, NONE)
+    case 'l':
+      extend(FULL, FULL, NONE, NONE, NONE)
+    case 'm':
+      extend(HALF, HALF, HALF, HALF, NONE)
 
-show_letter('a')
-sleep(1)
-show_letter('b')
-sleep(1)
+for letter in "abcdefghijklm":
+  show_letter(letter)
+  sleep(1)
 
 print("Done!")
