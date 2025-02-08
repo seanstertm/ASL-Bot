@@ -97,4 +97,6 @@ def show_letter(letter):
     case 'z':
       extend(NONE, FULL, NONE, NONE, NONE)
 
-print(sys.argv[2])
+for letter in sys.argv[1]:
+  show_letter(letter)
+  sleep(sys.argv[2])
