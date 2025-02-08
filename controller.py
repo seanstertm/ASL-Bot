@@ -20,11 +20,11 @@ middle = GPIO.PWM(7,50)
 ring = GPIO.PWM(11,50)
 pinky = GPIO.PWM(13,50)
 
-thumb.start()
-index.start()
-middle.start()
-ring.start()
-pinky.start()
+thumb.start(0)
+index.start(0)
+middle.start(0)
+ring.start(0)
+pinky.start(0)
 
 def extend(t, i, m, r, p):
   t = (t - 7.5) * -1 + 7.5
