@@ -106,3 +106,4 @@ for letter in sys.argv[1]:
   sleep(int(sys.argv[2]))
 
 extend(FULL, FULL, FULL, FULL, FULL)
+sleep(1)
