@@ -104,3 +104,5 @@ def show_letter(letter):
 for letter in sys.argv[1]:
   show_letter(letter)
   sleep(int(sys.argv[2]))
+
+extend(FULL, FULL, FULL, FULL, FULL)
