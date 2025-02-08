@@ -16,6 +16,8 @@ def handle_data():
     for letter in data['text'].lower():
       controller.show_letter(letter)
       sleep(1)
+
+    return {"success": "true"}
   
 
 if __name__ == '__main__':
