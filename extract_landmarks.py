@@ -32,10 +32,9 @@ def preprocess_landmarks(landmarks):
     return flattened
 
 # 4. Initialize MediaPipe Hands
-#    static_image_mode=True because we’re processing individual images
 with mp_hands.Hands(
     static_image_mode=True,
-    max_num_hands=1,                # We assume only one hand sign per image
+    max_num_hands=1,
     model_complexity=1,
     min_detection_confidence=0.5
 ) as hands:
@@ -44,7 +43,6 @@ with mp_hands.Hands(
     for letter in sorted(os.listdir(DATASET_DIR)):
         letter_folder = os.path.join(DATASET_DIR, letter)
         
-        # Check if it's a directory for letters
         if not os.path.isdir(letter_folder):
             continue
         
@@ -66,7 +64,6 @@ with mp_hands.Hands(
             results = hands.process(rgb_image)
             
             if results.multi_hand_landmarks:
-                # Take the first hand (assuming only one)
                 hand_landmarks = results.multi_hand_landmarks[0]
                 
                 # Extract the (x, y, z) coordinates
