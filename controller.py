@@ -1,3 +1,5 @@
+# Calling convention: python controller.py [string] [sleep length]
+
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -99,4 +101,4 @@ def show_letter(letter):
 
 for letter in sys.argv[1]:
   show_letter(letter)
-  sleep(sys.argv[2])
+  sleep(int(sys.argv[2]))
